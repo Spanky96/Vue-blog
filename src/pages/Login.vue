@@ -19,17 +19,17 @@
             <div class="userdenglu">
               <el-form :model="loginForm" status-icon size="small" class="login-form" :rules="rules" lable-width="0px" ref="loginForm">
                 <el-form-item prop="username">
-                  <el-input placeholder="请输入用户名" v-model="loginForm.username" prefix-icon="iconfont icon-yonghu"></el-input>
+                  <el-input placeholder="请输入用户名" v-model="loginForm.username" prefix-icon="iconfont iconyonghu"></el-input>
                 </el-form-item>
                 <el-form-item prop="password" >
-                  <el-input placeholder="请输入密码" class="password-input" :class="{'show-password': showPassword}" v-model="loginForm.password" prefix-icon="iconfont icon-mima">
+                  <el-input placeholder="请输入密码" class="password-input" :class="{'show-password': showPassword}" v-model="loginForm.password" prefix-icon="iconfont iconmima">
                     <i slot="suffix" class="el-icon-view" style="cursor:pointer;"  @click="showPassword = !showPassword;"></i>
                   </el-input>
                 </el-form-item>
                 <el-form-item prop="validateCode">
                   <el-row :span="24">
                     <el-col :span="14">
-                      <el-input placeholder="请输入验证码" v-model="loginForm.validateCode" prefix-icon="iconfont icon-yanzhengma" maxlength="4"></el-input>
+                      <el-input placeholder="请输入验证码" v-model="loginForm.validateCode" prefix-icon="iconfont iconyanzhengma" maxlength="4"></el-input>
                     </el-col>
                     <el-col :span="10">
                       <div class="login-code"><span class="login-code-img" v-once>{{validateCode}}</span></div>
@@ -88,33 +88,25 @@
     methods: {
       onSubmit: function () {
         var vm = this;
-        vm.$db.set('loginUser', {
-          name: '小明',
-          avator: '/static/imgs/conan.jpeg'
-        });
-        vm.$router.push({path: '/'});
-        /*
         vm.$refs['loginForm'].validate((valid) => {
           if (valid) {
-            vm.$http.get('api/login', {
-              params: {
-                username: vm.loginForm.username,
+            vm.$http.post('api/user/login', vm.$util.stringify({
+                account: vm.loginForm.username,
                 password: vm.loginForm.password
-              }}).then(function (res) {
-              if (res.data.code == '1') {
-                vm.$db.set('authorization', res.data.authorization);
+              })).then(function (res) {
+              if (res.data.code == 200) {
+                vm.$db.set('loginUser', res.data.data);
                 vm.$router.push({path: '/'});
               } else {
                 vm.loginForm.password = '';
                 vm.$message({
-                  message: res.data.message,
+                  message: res.data.message || '登录失败',
                   type: 'error'
                 });
               }
             });
           }
         });
-        */
       }
     }
   };

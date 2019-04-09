@@ -4,6 +4,8 @@
 
 const path = require('path')
 
+const proxyUrl = false ? 'http://134.175.97.144:8080/' : 'http://localhost:8080/';
+
 module.exports = {
   dev: {
 
@@ -40,23 +42,12 @@ module.exports = {
 
     cssSourceMap: true,
 
-    //付月华服务器
-    // proxyTable: { 
-    //   '/api': { 
-    //     target: 'http://118.31.236.223:8081/', //源地址 
-    //     changeOrigin: true, //改变源 
-    //     pathRewrite: { 
-    //       '^/api': 'http://118.31.236.223:8081/customer/api/' //路径重写 
-    //       } 
-    //   } 
-    // }
-    //朱晓辉服务器
     proxyTable: { 
       '/api': { 
-        target: 'http://132.232.90.132:8081/', //源地址 
+        target: proxyUrl, //源地址 
         changeOrigin: true, //改变源 
         pathRewrite: { 
-          '^/api': 'http://132.232.90.132:8081/customer/api/' //路径重写 
+          '^/api': proxyUrl //路径重写 
           } 
       } 
     }

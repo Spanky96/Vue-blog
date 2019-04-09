@@ -21,7 +21,7 @@
         </div>
         <div class="review-version" :class="{'layui-hide': !item.open}">
           <div class="form">
-            <img :src="$parent.loginUser.avator" class="avator-img">
+            <img :src="$parent.loginUser.logo" class="avator-img">
             <form class="layui-form" action="">
               <div class="layui-form-item layui-form-text">
                 <div class="layui-input-block">

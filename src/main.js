@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
+import './assets/icon/iconfont.css';
 import App from './App';
 // 支持IE 浏览器
 import 'babel-polyfill';
@@ -11,15 +12,20 @@ import router from './router';
 // 支持$http
 import axios from 'axios';
 import filters from './filters';
+import utils from './utils/CommonUtil';
 import VueQriously from 'vue-qriously';
 
 Vue.use(ElementUI);
 Vue.use(VueQriously);
-Vue.prototype.$http = axios;
 Vue.config.productionTip = false;
 Vue.prototype.$db = db;
 
+axios.defaults.headers['Content-Type'] = 'application/x-www-form-urlencoded';
 axios.defaults.withCredentials = true;
+Vue.prototype.$http = axios;
+
+Vue.prototype.$util = utils;
+
 for (let key in filters) {
   Vue.filter(key, filters[key]);
 }

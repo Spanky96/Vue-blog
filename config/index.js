@@ -4,7 +4,7 @@
 
 const path = require('path')
 
-const proxyUrl = false ? 'http://134.175.97.144:8080/' : 'http://localhost:8080/';
+const proxyUrl = false ? 'http://134.175.97.144:8147/' : 'http://localhost:8080/';
 
 module.exports = {
   dev: {

@@ -468,11 +468,11 @@ body {
 .about-content {
   background: #faf8fb;
   .item {
-    padding-bottom: 100px;
+    padding-bottom: 20px;
     h3 {
       font-size: 24px;
       color: #3f2863;
-      line-height: 100px;
+      line-height: 80px;
     }
     &.info {
       .cont {
@@ -500,6 +500,7 @@ body {
     }
     &.contact .cont {
       overflow: hidden;
+      margin-left: 20px;
       img,canvas{
         width: 110px;
         height: 110px;

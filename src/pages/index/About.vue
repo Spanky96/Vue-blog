@@ -18,34 +18,17 @@
           </div>
         </div>
       </div>
-      <div class="item tool">
+      <div class="item tool" v-if="skillList.length">
         <div class="title">
           <h3>我的技能</h3>
         </div>
         <div class="layui-fluid">
           <div class="layui-row">
-            <div class="layui-col-xs6 layui-col-sm3 layui-col-md3">
+            <div class="layui-col-xs6 layui-col-sm3 layui-col-md3" v-for="(item, index) in skillList" :key="index">
               <div class="cont-box">
-                <img src="../../assets/img/gr_img2.jpg">
-                <p>80%</p>
-              </div>
-            </div>
-            <div class="layui-col-xs6 layui-col-sm3 layui-col-md3">
-              <div class="cont-box">
-                <img src="../../assets/img/gr_img3.jpg">
-                <p>80%</p>
-              </div>
-            </div>
-            <div class="layui-col-xs6 layui-col-sm3 layui-col-md3">
-              <div class="cont-box">
-                <img src="../../assets/img/gr_img4.jpg">
-                <p>80%</p>
-              </div>
-            </div>
-            <div class="layui-col-xs6 layui-col-sm3 layui-col-md3">
-              <div class="cont-box">
-                <img src="../../assets/img/gr_img5.jpg">
-                <p>80%</p>
+                <img :src="item.img">
+                <el-progress type="circle" :percentage="item.poficiency" :width="140" class="processBar"></el-progress>
+                <div class="name">{{item.content}}</div>
               </div>
             </div>
           </div>
@@ -76,10 +59,25 @@
     data () {
       var info = this.$parent.blogInfo;
       return {
-        info
+        info,
+        skillList: []
       };
     },
     methods: {
+      getSkillList: function () {
+        var vm = this;
+        var blogId = vm.$parent.blogId;
+        vm.$http.post('api/skill/list', vm.$util.stringify({
+          usrId: blogId
+        })).then(function (res) {
+        if (res.data.code == 200) {
+          vm.skillList = res.data.data.sort((n, n2) => n.sort - n2.sort);
+        }
+      });
+      }
+    },
+    mounted: function () {
+      this.getSkillList();
     }
   };
 
@@ -91,6 +89,36 @@
   font-size: 15px;
   .k {
     min-width: 45px;
+  }
+}
+
+.cont-box {
+  position: relative;
+  height: 150px;
+  margin-top: 25px;
+  margin-bottom: 15px;
+  img {
+    width: 80px;
+    height: 80px;
+    padding-top: 25px;
+    border-radius: 35px;
+  }
+  .processBar {
+    position: absolute;
+    left: calc(50% - 70px);
+    top: 0;
+    /deep/.el-progress--circle .el-progress__text {
+      top: 84%;
+    }
+  }
+  .name {
+    position: absolute;
+    top: -28px;
+    font-size: 16px;
+    left: 0;
+    right: 0;
+    color: #8c0d81;
+    font-weight: bold;
   }
 }
 </style>

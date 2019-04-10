@@ -29,6 +29,20 @@ Vue.prototype.$util = utils;
 for (let key in filters) {
   Vue.filter(key, filters[key]);
 }
+
+router.beforeEach((to, from, next) => {
+  if (to.fullPath == '/') {
+    var loginUser = db.get('loginUser');
+    if (loginUser) {
+      router.push({name: 'Index', params: {id: loginUser.id}});
+    } else {
+      router.push({name: 'Login'});
+    }
+  } else {
+    next();
+  }
+});
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

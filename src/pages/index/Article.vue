@@ -7,7 +7,7 @@
           <h4 id="user_sign">well-balanced heart</h4>
         </div>
         <div class="amount">
-          <p><span class="text" id="user_visit_count">访问量</span><span class="access">1000</span></p>
+          <p><span class="text" id="user_visit_count">访问量</span><span class="access">{{$parent.blogInfo.visitCount}}</span></p>
           <!-- <p><span class="text" id="user_">日志</span><span class="daily-record">1000</span></p> -->
         </div>
       </div>

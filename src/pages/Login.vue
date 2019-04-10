@@ -96,7 +96,7 @@
               })).then(function (res) {
               if (res.data.code == 200) {
                 vm.$db.set('loginUser', res.data.data);
-                vm.$router.push({path: '/'});
+                vm.$router.push({path: '/' + res.data.data.id});
               } else {
                 vm.loginForm.password = '';
                 vm.$message({

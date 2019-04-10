@@ -1,3 +1,6 @@
+function genderFmt (val) {
+  return ['', '男', '女'][val];
+}
 function isSuccessFmt (val) {
   return val ? '成功' : '失败';
 }
@@ -11,6 +14,7 @@ function isOrNoFmt (val) {
   }
 }
 export default {
+  genderFmt,
   isSuccessFmt,
   isOrNoFmt
 };

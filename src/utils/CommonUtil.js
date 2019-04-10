@@ -1,4 +1,5 @@
 import qs from 'qs';
+import _ from 'lodash/lang';
 export default {
   stringify: qs.stringify,
   toggleAttr: function (arr, index, attrName = 'active') {
@@ -6,5 +7,6 @@ export default {
         element[attrName] = false;
     });
     arr[index][attrName] = true;
-  }
+  },
+  isEmpty: _.isEmpty
 };

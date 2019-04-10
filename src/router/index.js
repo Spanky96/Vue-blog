@@ -10,18 +10,19 @@ import Album from '@/pages/index/Album';
 import About from '@/pages/index/About';
 import Details from '@/pages/index/Details';
 
+import Fail from '@/pages/Fail';
 Vue.use(Router);
 export default new Router({
   routes: [
     {
-      path: '/',
-      redirect: '/page'
+      path: '/:id',
+      redirect: '/:id/page'
     },
     {
-      path: '/page',
+      path: '/:id/page',
       name: 'Index',
       component: Index,
-      redirect: '/page/article',
+      redirect: '/:id/page/article',
       children: [
         {
           path: 'article',
@@ -59,6 +60,11 @@ export default new Router({
       path: '/login',
       name: 'Login',
       component: Login
+    },
+    {
+      path: '/fail',
+      name: 'Fail',
+      component: Fail
     }
   ]
 });

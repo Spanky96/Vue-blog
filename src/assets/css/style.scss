@@ -477,6 +477,8 @@ body {
     &.info {
       .cont {
         overflow: hidden;
+        display: flex;
+        align-items: center;
       }
       img{
         float: left;

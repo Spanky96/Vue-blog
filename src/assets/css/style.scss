@@ -477,8 +477,10 @@ body {
     &.info {
       .cont {
         overflow: hidden;
-        display: flex;
-        align-items: center;
+        @media screen and (min-width: 768px) {
+          display: flex;
+          align-items: center;
+        }
       }
       img{
         float: left;

@@ -14,96 +14,26 @@
     </div>
     <div class="content">
       <div class="cont w1000">
-        <div class="title">
-          <span class="layui-breadcrumb" lay-separator="|" id="user_articleCategory">
-            <a href="javascript:;" class="active">设计文章</a>
-            <a href="javascript:;">前端文章</a>
-            <a href="javascript:;">旅游杂记</a>
-          </span>
+        <div class="content-tabs" v-if="categorys.length > 1">
+          <div class="tabs" v-for="(c, id) in categorys" :key="id" :class="{active: c.active}" @click="categoryClick(id)">{{c.name}}</div>
         </div>
         <div class="list-item">
-          <div class="item">
+          <div class="item" v-for="(item, index) in articleListCategoryed" :key="index">
             <div class="layui-fluid">
               <div class="layui-row">
                 <div class="layui-col-xs12 layui-col-sm4 layui-col-md5">
-                  <div class="img"><img src="../../assets/img/sy_img1.jpg" alt=""></div>
+                  <div class="img"><img :src="item.banner" alt=""></div>
                 </div>
                 <div class="layui-col-xs12 layui-col-sm8 layui-col-md7">
                   <div class="item-cont">
-                    <h3>空间立体效果图，完美呈现最终效果<button class="layui-btn layui-btn-danger new-icon">new</button></h3>
-                    <h5>设计文章</h5>
-                    <p>室内设计作为一门新兴的学科，尽管还只是近数十年的事，但是人们有意识地对自己生活、生产活动的室内进行安排布置，甚至美化装饰，赋予室内环境以所祈使的气氛，却早巳从人类文明伊始的时期就已存在</p>
-                    <router-link to="/page/details" class="go-icon"></router-link>
+                    <!-- <button class="layui-btn layui-btn-danger new-icon">new</button> -->
+                    <h3 class="title">{{item.title}}</h3>
+                    <h5><div>{{item.categoryName}}</div><div>{{item.createTime}}</div></h5>
+                    <p>{{item.content}}</p>
+                    <h4>{{item.description}}</h4>
+                    <!-- <router-link to="/page/details" class="go-icon"></router-link> -->
                   </div>
-              </div>
-              </div>
-            </div>
-          </div>
-          <div class="item">
-            <div class="layui-fluid">
-              <div class="layui-row">
-                <div class="layui-col-xs12 layui-col-sm4 layui-col-md5">
-                  <div class="img"><img src="../../assets/img/sy_img2.jpg" alt=""></div>
                 </div>
-                <div class="layui-col-xs12 layui-col-sm8 layui-col-md7">
-                  <div class="item-cont">
-                    <h3>空间立体效果图，完美呈现最终效果<button class="layui-btn layui-btn-danger new-icon">new</button></h3>
-                    <h5>设计文章</h5>
-                    <p>室内设计作为一门新兴的学科，尽管还只是近数十年的事，但是人们有意识地对自己生活、生产活动的室内进行安排布置，甚至美化装饰，赋予室内环境以所祈使的气氛，却早巳从人类文明伊始的时期就已存在</p>
-                    <router-link to="/page/details" class="go-icon"></router-link>
-                  </div>
-              </div>
-              </div>
-            </div>
-          </div>
-          <div class="item">
-            <div class="layui-fluid">
-              <div class="layui-row">
-                <div class="layui-col-xs12 layui-col-sm4 layui-col-md5">
-                  <div class="img"><img src="../../assets/img/sy_img3.jpg" alt=""></div>
-                </div>
-                <div class="layui-col-xs12 layui-col-sm8 layui-col-md7">
-                  <div class="item-cont">
-                    <h3>空间立体效果图，完美呈现最终效果<button class="layui-btn layui-btn-danger new-icon">new</button></h3>
-                    <h5>设计文章</h5>
-                    <p>室内设计作为一门新兴的学科，尽管还只是近数十年的事，但是人们有意识地对自己生活、生产活动的室内进行安排布置，甚至美化装饰，赋予室内环境以所祈使的气氛，却早巳从人类文明伊始的时期就已存在</p>
-                    <router-link to="/page/details" class="go-icon"></router-link>
-                  </div>
-              </div>
-              </div>
-            </div>
-          </div>
-          <div class="item">
-            <div class="layui-fluid">
-              <div class="layui-row">
-                <div class="layui-col-xs12 layui-col-sm4 layui-col-md5">
-                  <div class="img"><img src="../../assets/img/sy_img4.jpg" alt=""></div>
-                </div>
-                <div class="layui-col-xs12 layui-col-sm8 layui-col-md7">
-                  <div class="item-cont">
-                    <h3>空间立体效果图，完美呈现最终效果<button class="layui-btn layui-btn-danger new-icon">new</button></h3>
-                    <h5>设计文章</h5>
-                    <p>室内设计作为一门新兴的学科，尽管还只是近数十年的事，但是人们有意识地对自己生活、生产活动的室内进行安排布置，甚至美化装饰，赋予室内环境以所祈使的气氛，却早巳从人类文明伊始的时期就已存在</p>
-                    <router-link to="/page/details" class="go-icon"></router-link>
-                  </div>
-              </div>
-              </div>
-            </div>
-          </div>
-          <div class="item">
-            <div class="layui-fluid">
-              <div class="layui-row">
-                <div class="layui-col-xs12 layui-col-sm4 layui-col-md5">
-                  <div class="img"><img src="../../assets/img/sy_img5.jpg" alt=""></div>
-                </div>
-                <div class="layui-col-xs12 layui-col-sm8 layui-col-md7">
-                  <div class="item-cont">
-                    <h3>空间立体效果图，完美呈现最终效果<button class="layui-btn layui-btn-danger new-icon">new</button></h3>
-                    <h5>设计文章</h5>
-                    <p>室内设计作为一门新兴的学科，尽管还只是近数十年的事，但是人们有意识地对自己生活、生产活动的室内进行安排布置，甚至美化装饰，赋予室内环境以所祈使的气氛，却早巳从人类文明伊始的时期就已存在</p>
-                    <router-link to="/page/details" class="go-icon"></router-link>
-                  </div>
-              </div>
               </div>
             </div>
           </div>
@@ -113,27 +43,75 @@
           background
           layout="prev, pager, next"
           :pager-count="5"
-          :total="1000">
+          :page-sizes="5"
+          :total="total"
+          :current-page="currentPage"
+          @current-change="handlePageChange">
         </el-pagination>
       </div>
     </div>
   </div>
 </template>
 <script>
+  import _ from 'lodash';
   export default {
     data () {
       return {
+        categorys: [{name: '全部', active: true}],
+        articleList: [],
+        currentPage: 1,
+        total: 0,
+        isloading: false
       };
     },
     methods: {
+      handlePageChange: function (val) {
+        this.currentPage = val;
+      },
+      categoryClick: function (id) {
+        var vm = this;
+        if (!vm.categorys[id].active) {
+          vm.categorys.forEach((item, index) => {
+            item.active = index == id;
+          });
+          vm.currentPage = 1;
+          vm.total = (id == 0 ? vm.articleList.length : vm.categorys[id].total);
+        }
+      },
+      getArticles: function () {
+        var vm = this;
+        var blogId = vm.$parent.blogId;
+        vm.isloading = true;
+        vm.$http.post('api/article/list', vm.$util.stringify({
+          usrId: blogId
+        })).then(function (res) {
+          if (res.data.code == 200) {
+            vm.articleList = res.data.data;
+            vm.total = res.data.data.length;
+            var categorys = _.groupBy(res.data.data, 'categoryName');
+            Object.keys(categorys).forEach((n) => {
+              vm.categorys.push(
+                {name: n, active: false, total: categorys[n].length}
+              );
+            });
+          }
+          vm.isloading = false;
+        });
+      }
     },
     mounted: function () {
-      // layui.use(['laypage'], function () {
-      //   layui.laypage.render({
-      //     elem: 'demo',
-      //     count: 70
-      //   });
-      // });
+      this.getArticles();
+    },
+    computed: {
+      articleListCategoryed: function () {
+        var vm = this;
+        var i = _.findIndex(vm.categorys, (n) => n.active);
+        if (i) {
+          return _.filter(vm.articleList, (n) => n.categoryName == this.categorys[i].name).slice((vm.currentPage - 1) * 5, vm.currentPage * 5);
+        } else {
+          return vm.articleList.slice((vm.currentPage - 1) * 5, vm.currentPage * 5);
+        }
+      }
     }
   };
 

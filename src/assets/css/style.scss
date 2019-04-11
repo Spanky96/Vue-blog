@@ -119,20 +119,16 @@ body {
 }
 
 .content {
-  padding: 100px 0 160px 0;
+  padding: 50px 0 160px 0;
   .cont {
-    .title {
+    .content-tabs {
       margin-bottom: 60px;
-      a {
+      display: flex;
+      padding: 0 10px;
+      .tabs {
+        margin-right: 25px;
         font-size: 16px;
         color: #000 !important;
-      }
-      .layui-breadcrumb span {
-        position: relative;
-        top: -1px;
-        margin: 0 16px;
-      }
-      a {
         &.active, &:hover {
           color: #ff7f21 !important;
         }
@@ -145,8 +141,11 @@ body {
       .item {
         margin-bottom: 80px;
         overflow: hidden;
+        max-height: 240px;
         .img img {
           width: 100%;
+          max-height: 240px;
+          object-fit: cover;
         }
         .item-cont {
           padding-left: 100px;
@@ -159,8 +158,15 @@ body {
             margin-top: 16px;
           }
           h3 {
-            font-size: 24px;
-            margin: 20px 0;
+            margin: 0 0 15px;
+            font-size: 20px;
+            cursor: pointer;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            &:hover {
+              text-decoration: underline;
+            }
             .new-icon {
               width: 36px;
               height: 18px;
@@ -174,16 +180,25 @@ body {
             font-size: 12px;
             color: #ff7f21;
             margin-bottom: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+          }
+          h4 {
+            margin: 20px 0;
+            font-style: italic;
+            color: #663399;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
+            overflow: hidden;
           }
           p {
             line-height: 37px;
             display: -webkit-box;
             -webkit-box-orient: vertical;
-            -webkit-line-clamp: 2;
+            -webkit-line-clamp: 4;
             overflow: hidden;
-            /* autoprefixer: off */
-            -webkit-box-orient: vertical;
-            /* autoprefixer: on */
           }
         }
       }
@@ -532,19 +547,14 @@ body {
   }
   .content {
     .cont {
-      .title {
-        padding-left: 10px;
-      }
       .list-item .item {
+        max-height: unset;
         .img {
           padding: 0 10px;
+          max-height: unset;
         }
         .item-cont {
           padding: 0 20px;
-          h3 {
-            margin: 15px 0;
-            font-size: 22px;
-          }
           h5 {
             margin-bottom: 10px;
           }

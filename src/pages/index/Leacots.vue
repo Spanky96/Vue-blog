@@ -22,16 +22,16 @@
                 </div>
               </div>
               <div class="volume">
-                全部留言 <span>{{leacotList.length}}</span>
+                全部留言 <span>{{leacotList.length ? leacotList.length : ''}}</span>
               </div>
-              <div class="list-cont">
+              <div class="list-cont" v-loading="isloading">
                 <div class="cont" v-for="(item, id) in leacotListPaganation" :key="id">
                   <div class="img">
                     <img :src="item.authorLogo" alt="" class="avator-img">
                   </div>
                   <div class="text">
                     <p class="tit"><span class="name">{{item.authorName}}</span><span class="data">{{item.createTime}}</span></p>
-                    <p class="ct">id{{item.content}}</p>
+                    <p class="ct">{{item.content}}</p>
                   </div>
                 </div>
               </div>
@@ -53,19 +53,22 @@
     data () {
       return {
         leacotList: [],
-        currentPage: 1
+        currentPage: 1,
+        isloading: false
       };
     },
     methods: {
       getLeacotList: function () {
         var vm = this;
         var blogId = vm.$parent.blogId;
+        vm.isloading = true;
         vm.$http.post('api/message/list', vm.$util.stringify({
           usrId: blogId
         })).then(function (res) {
           if (res.data.code == 200) {
             vm.leacotList = res.data.data;
           }
+          vm.isloading = false;
         });
       },
       handlePageChange: function (val) {
@@ -83,6 +86,9 @@
   };
 
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
+.list-cont {
+  min-height: 60px;
+}
 
 </style>

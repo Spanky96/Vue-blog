@@ -2,21 +2,22 @@
   <div>
     <div class="header">
       <div class="menu-btn">
-        <div class="menu"></div>
+        <div class="menu" :class="{on: showMobileMenu}" @click="showMobileMenu = !showMobileMenu"></div>
       </div>
       <h1 class="logo">
         <router-link :to="'/' + $route.params.id">
           <span>MYBLOG</span>
-          <img src="../assets/img/logo.png">
+          <img :src="(blogInfo && blogInfo.banner) || '../assets/img/logo.png'" alt="" width="120" height="70">
         </router-link>
       </h1>
       <div class="nav">
         <router-link v-for="(item, index) in menus" :key="index" :to="'/' + $route.params.id + item.path" :class="{active: item.active}">{{item.name}}</router-link>
       </div>
-      <ul class="layui-nav header-down-nav">
+      <ul class="layui-nav header-down-nav" :class="{'layui-show': showMobileMenu}" @click="showMobileMenu = false">
         <li v-for="(item, index) in menus" :key="index" class="layui-nav-item">
           <router-link :to="'/' + $route.params.id + item.path" :class="{active: item.active}">{{item.name}}</router-link>
         </li>
+        <li class="layui-nav-item"><a @click="loginOut">{{loginUser ? '退出': ''}}登录</a></li>
       </ul>
       <p class="welcome-text">
         <span v-if="loginUser">你好{{loginUser.name}}!</span>
@@ -51,7 +52,6 @@
 </template>
 <script>
 
-import layui from 'layui';  
 export default {
   data () {
     var vm = this;
@@ -76,6 +76,7 @@ export default {
       n.active = activeItem == n.component;
     });
     return {
+      showMobileMenu: false,
       blogId,
       menus,
       blogInfo: ''
@@ -128,13 +129,6 @@ export default {
     indexLocation: function () {
       return 'http://' + location.host + '/#/' + this.blogId;
     }
-  },
-  mounted: function () {
-    layui.config({
-      base: '/static/layui/util/'
-    }).use(['element', 'menu'], function () {
-      layui.menu.init();
-    });
   },
   watch: {
     $route: function () {

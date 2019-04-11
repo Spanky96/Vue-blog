@@ -600,7 +600,7 @@ body {
 
 @media screen and (max-width: 768px) {
   .header {
-    .nav, .welcome-text {
+    .nav, .welcome-text, .login-out {
       display: none;
     }
   }
@@ -756,6 +756,10 @@ body {
       display: block;
       a {
         font-size: 16px;
+        &.active {
+          background: #ff8e28;
+          color: white;
+        }
       }
     }
   }

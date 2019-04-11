@@ -4,7 +4,7 @@
       <div class="cont w1000">
         <div class="title">
           <h3 id="user_nickName1">MY<br />BLOG</h3>
-          <h4 id="user_sign">well-balanced heart</h4>
+          <h4 id="user_sign">{{$parent.blogInfo.sign}}</h4>
         </div>
         <div class="amount">
           <p><span class="text" id="user_visit_count">访问量</span><span class="access">{{$parent.blogInfo.visitCount}}</span></p>

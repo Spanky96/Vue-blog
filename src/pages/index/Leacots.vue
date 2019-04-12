@@ -7,10 +7,10 @@
               <div class="form-box">
                 <img class="banner-img" src="../../assets/img/liuyan.jpg">
                 <div class="form">
-                  <form class="layui-form" action="">
+                  <div class="layui-form">
                     <div class="layui-form-item layui-form-text">
                       <div class="layui-input-block">
-                        <textarea name="desc" placeholder="既然来了，就说几句" class="layui-textarea"></textarea>
+                        <textarea name="desc" v-model="content" placeholder="既然来了，就说几句" class="layui-textarea"></textarea>
                       </div>
                     </div>
                     <div class="layui-form-item">
@@ -18,7 +18,7 @@
                         <button class="layui-btn definite" @click="addMessage">確定</button>
                       </div>
                     </div>
-                  </form>
+                  </div>
                 </div>
               </div>
               <div class="volume">
@@ -82,7 +82,7 @@
           return;
         }
         vm.isAdd = true;
-        if (vm.content == null || vm.content == '') {
+        if (!vm.content.trim()) {
           vm.isAdd = false;
           vm.$message({
             message: '请输入留言信息(＾Ｕ＾)ノ~ＹＯ',
@@ -92,30 +92,27 @@
         }
         vm.loginUser = this.$db.get('loginUser');
         var blogId = vm.$parent.blogId;
-        var token = null;
-        if (vm.loginUser) {
-          token = vm.loginUser.token || null;
-        }
-        vm.$http.request({
-            url: 'api/message/add?token=' + token,
-            data: vm.$util.stringify({user: blogId, content: vm.content}),
+        var token = vm.loginUser ? vm.loginUser.token : null;
+        vm.$http({
+            url: 'api/message/add',
+            data: {user: blogId, content: vm.content},
             method: 'post',
-            header: {'content-type': 'application/json'}
+            headers: {'content-type': 'application/json', 'authorT': token}
           }).then(function (res) {
-            if (res.data.code == 200) {
-              vm.$message({
-                message: res.data.data,
-                type: 'success'
-              });
-              vm.content = '';
-            } else {
-              vm.$message({
-                message: '出错咯，(づ￣3￣)づ╭❤～',
-                type: 'error'
-              });
-            }
-            vm.isAdd = false;
-          });
+          if (res.data.code == 200) {
+            vm.$message({
+              message: res.data.data,
+              type: 'success'
+            });
+            vm.content = '';
+          } else {
+            vm.$message({
+              message: '出错咯，(づ￣3￣)づ╭❤～',
+              type: 'error'
+            });
+          }
+          vm.isAdd = false;
+        });
       }
     },
     mounted: function () {

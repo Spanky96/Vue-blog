@@ -14,7 +14,7 @@
             <img v-for="(img, idimg) in item.imgs" :key="idimg" :src="img">
           </div>
           <div class="op-list">
-            <p class="like"><i class="layui-icon layui-icon-praise"></i><span>{{item.loveCount}}</span></p> 
+            <p class="like" @click="praiseWhisper(item.id)"><i class="layui-icon layui-icon-praise"></i><span>{{item.loveCount}}</span></p> 
             <p class="edit"><i class="layui-icon layui-icon-reply-fill"></i><span>{{item.commentCount}}</span></p>
             <p class="off" @click="item.open = !item.open; $forceUpdate();"><span>{{item.open ? '展开' : '收起'}}</span><i class="layui-icon" :class="item.open ? 'layui-icon-down' : 'layui-icon-up'"></i></p>
           </div>
@@ -22,18 +22,18 @@
         <div class="review-version" :class="{'layui-hide': !item.open}">
           <div class="form">
             <img :src="$parent.loginUser.logo" v-if="$parent.loginUser" class="avator-img">
-            <form class="layui-form" action="">
+            <div class="layui-form" action="">
               <div class="layui-form-item layui-form-text">
                 <div class="layui-input-block">
-                  <textarea name="desc" class="layui-textarea"></textarea>
+                  <textarea name="desc" class="layui-textarea" v-model="comment"></textarea>
                 </div>
               </div>
               <div class="layui-form-item">
                 <div class="layui-input-block" style="text-align: right;">
-                  <button class="layui-btn definite">確定</button>
+                  <button class="layui-btn definite" @click="commentWhisper(item.id)">確定</button>
                 </div>
               </div>
-            </form>
+            </div>
           </div>
           <div class="list-cont">
             <div class="cont" v-for="(comment, id) in item.comments" :key="id">
@@ -73,7 +73,10 @@
         currentPage: 1,
         total: 0,
         isloading: false,
-        whisperItem: []
+        whisperItem: [],
+        comment: '',
+        isComment: false,
+        isPraise: false
       };
     },
     methods: {
@@ -101,6 +104,103 @@
             });
           }
           vm.isloading = false;
+        });
+      },
+      commentWhisper: function (i) {
+        var vm = this;
+        if (vm.isComment) {
+          vm.$message({
+            message: '手速太快啦',
+            type: 'warning'
+          });
+          return;
+        }
+        vm.isComment = true;
+        vm.loginUser = this.$db.get('loginUser');
+        var token = vm.loginUser ? vm.loginUser.token : null;
+        if (token == null) {
+          vm.$message({
+            message: '需要登录才能评论呐',
+            type: 'warning'
+          });
+          vm.isComment = false;
+          return;
+        }
+        if (!vm.comment.trim()) {
+          vm.isComment = false;
+          vm.$message({
+            message: '请输入评论信息(＾Ｕ＾)ノ~ＹＯ',
+            type: 'warning'
+          });
+          return;
+        }
+        vm.$http({
+          url: 'api/comment/add',
+          data: {parent: i, content: vm.comment, type: 3},
+          method: 'post',
+          headers: {'content-type': 'application/json', 'authorT': token}
+        }).then(function (res) {
+          if (res.data.code == 200) {
+            vm.$message({
+              message: res.data.data,
+              type: 'success'
+            });
+            vm.comment = '';
+          } else {
+            vm.$message({
+              message: res.data.message,
+              type: 'error'
+            });
+          }
+          vm.isComment = false;
+        });
+      },
+      praiseWhisper: function (i) {
+        var vm = this;
+        if (vm.isPraise) {
+          vm.$message({
+            message: '手速太快啦',
+            type: 'warning'
+          });
+          return;
+        }
+        vm.isPraise = true;
+        vm.loginUser = this.$db.get('loginUser');
+        var token = vm.loginUser ? vm.loginUser.token : null;
+        if (token == null) {
+          vm.$message({
+            message: '需要登录才能评论呐',
+            type: 'warning'
+          });
+          vm.isPraise = false;
+          return;
+        }
+        vm.$http({
+          url: 'api/whisper/praise',
+          data: vm.$util.stringify({whisperId: i}),
+          method: 'post',
+          headers: {'content-type': 'application/x-www-form-urlencoded', 'authorT': token}
+        }).then(function (res) {
+          if (res.data.code == 200) {
+            var index = res.data.data;
+            if (index == 1) {
+              vm.$message({
+                message: '点赞+' + index,
+                type: 'success'
+              });
+            } else {
+              vm.$message({
+                message: '点赞失败',
+                type: 'warning'
+              });
+            }
+          } else {
+            vm.$message({
+              message: res.data.message,
+              type: 'error'
+            });
+          }
+          vm.isPraise = false;
         });
       }
     },

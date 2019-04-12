@@ -1,5 +1,5 @@
 <template>
-<div class="content whisper-content">
+<div class="content whisper-content" v-loading="isloading">
   <div class="cont">
     <div class="whisper-list">
       <div class="item-box" v-for="(item, index) in whisperPage" :key="index">
@@ -16,7 +16,7 @@
           <div class="op-list">
             <p class="like"><i class="layui-icon layui-icon-praise"></i><span>{{item.loveCount}}</span></p> 
             <p class="edit"><i class="layui-icon layui-icon-reply-fill"></i><span>{{item.commentCount}}</span></p>
-            <p class="off" @click="handleComment(index,!item.open)"><span>{{item.open ? '展开' : '收起'}}</span><i class="layui-icon" :class="item.open ? 'layui-icon-down' : 'layui-icon-up'"></i></p>
+            <p class="off" @click="item.open = !item.open; $forceUpdate();"><span>{{item.open ? '展开' : '收起'}}</span><i class="layui-icon" :class="item.open ? 'layui-icon-down' : 'layui-icon-up'"></i></p>
           </div>
         </div>
         <div class="review-version" :class="{'layui-hide': !item.open}">
@@ -53,7 +53,7 @@
         background
         layout="prev, pager, next"
         :pager-count="5"
-        :page-sizes="5"
+        :page-size="5"
         :total="total"
         :current-page="currentPage"
         @current-change="handlePageChange">
@@ -83,6 +83,7 @@
       getWhisper: function () {
         var vm = this;
         var blogId = vm.$parent.blogId;
+        vm.isloading = true;
         vm.$http.post('api/whisper/list', vm.$util.stringify({
           usrId: blogId
         })).then(function (res) {
@@ -90,10 +91,10 @@
             vm.whispers = res.data.data;
             vm.total = res.data.data.length;
             vm.whispers.forEach((n) => {
-              var tmpimg = n.imgs || "";
-              n.imgs = tmpimg.split(",");
-              var createTime = n.createTime || "2019-01-01 12:40:52";
-              createTime = createTime.split(" ");
+              var tmpimg = n.imgs || '';
+              n.imgs = vm.$util.split(tmpimg, ',');
+              var createTime = n.createTime || '-- --';
+              createTime = createTime.split(' ');
               n.date = createTime[0];
               n.time = createTime[1];
               n.open = false;
@@ -101,10 +102,6 @@
           }
           vm.isloading = false;
         });
-      },
-      handleComment: function (i, v) {
-        console.log(i, v);
-        this.whisperItem[i].open = v;
       }
     },
     mounted: function () {
@@ -135,7 +132,7 @@
       object-fit: cover;
     }
   }
-  &.__3 {
+  &.__3, &.__4, &.__5, &.__6, &.__7, &.__8, &.__9, &.__10 {
     img {
       width: 31.075%;
       max-height: 168px;

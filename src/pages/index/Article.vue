@@ -17,7 +17,7 @@
         <div class="content-tabs" v-if="categorys.length > 1">
           <div class="tabs" v-for="(c, id) in categorys" :key="id" :class="{active: c.active}" @click="categoryClick(id)">{{c.name}}</div>
         </div>
-        <div class="list-item">
+        <div class="list-item" v-loading="isloading">
           <div class="item" v-for="(item, index) in articleListCategoryed" :key="index">
             <div class="layui-fluid">
               <div class="layui-row">
@@ -43,7 +43,7 @@
           background
           layout="prev, pager, next"
           :pager-count="5"
-          :page-sizes="5"
+          :page-size="5"
           :total="total"
           :current-page="currentPage"
           @current-change="handlePageChange">

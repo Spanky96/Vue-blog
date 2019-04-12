@@ -15,7 +15,7 @@
                     </div>
                     <div class="layui-form-item">
                       <div class="layui-input-block" style="text-align: right;">
-                        <button class="layui-btn definite">確定</button>
+                        <button class="layui-btn definite" @click="addMessage">確定</button>
                       </div>
                     </div>
                   </form>
@@ -54,7 +54,9 @@
       return {
         leacotList: [],
         currentPage: 1,
-        isloading: false
+        isloading: false,
+        content: '',
+        isAdd: false
       };
     },
     methods: {
@@ -73,6 +75,47 @@
       },
       handlePageChange: function (val) {
         this.currentPage = val;
+      },
+      addMessage: function () {
+        var vm = this;
+        if (vm.isAdd) {
+          return;
+        }
+        vm.isAdd = true;
+        if (vm.content == null || vm.content == '') {
+          vm.isAdd = false;
+          vm.$message({
+            message: '请输入留言信息(＾Ｕ＾)ノ~ＹＯ',
+            type: 'warning'
+          });
+          return;
+        }
+        vm.loginUser = this.$db.get('loginUser');
+        var blogId = vm.$parent.blogId;
+        var token = null;
+        if (vm.loginUser) {
+          token = vm.loginUser.token || null;
+        }
+        vm.$http.request({
+            url: 'api/message/add?token=' + token,
+            data: vm.$util.stringify({user: blogId, content: vm.content}),
+            method: 'post',
+            header: {'content-type': 'application/json'}
+          }).then(function (res) {
+            if (res.data.code == 200) {
+              vm.$message({
+                message: res.data.data,
+                type: 'success'
+              });
+              vm.content = '';
+            } else {
+              vm.$message({
+                message: '出错咯，(づ￣3￣)づ╭❤～',
+                type: 'error'
+              });
+            }
+            vm.isAdd = false;
+          });
       }
     },
     mounted: function () {

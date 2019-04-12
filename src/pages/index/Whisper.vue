@@ -14,7 +14,7 @@
             <img v-for="(img, idimg) in item.imgs" :key="idimg" :src="img">
           </div>
           <div class="op-list">
-            <p class="like" @click="praiseWhisper(item.id)"><i class="layui-icon layui-icon-praise"></i><span>{{item.loveCount}}</span></p> 
+            <p class="like" @click="praiseWhisper(item.id,item.isPraised)"><i class="layui-icon layui-icon-praise"></i><span>{{item.loveCount}}</span></p> 
             <p class="edit" @click="item.open = true;$forceUpdate();"><i class="layui-icon layui-icon-reply-fill"></i><span>{{item.commentCount}}</span></p>
             <p class="off" @click="item.open = !item.open; $forceUpdate();"><span>{{item.open ? '展开' : '收起'}}</span><i class="layui-icon" :class="item.open ? 'layui-icon-down' : 'layui-icon-up'"></i></p>
           </div>
@@ -86,10 +86,15 @@
       getWhisper: function () {
         var vm = this;
         var blogId = vm.$parent.blogId;
+        vm.loginUser = this.$db.get('loginUser');
+        var token = vm.loginUser ? vm.loginUser.token : null;
         vm.isloading = true;
-        vm.$http.post('api/whisper/list', vm.$util.stringify({
-          usrId: blogId
-        })).then(function (res) {
+        vm.$http({
+          url: 'api/whisper/list',
+          data: vm.$util.stringify({usrId: blogId}),
+          method: 'post',
+          headers: {'content-type': 'application/x-www-form-urlencoded', 'authorT': token}
+        }).then(function (res) {
           if (res.data.code == 200) {
             vm.whispers = res.data.data;
             vm.total = res.data.data.length;
@@ -163,8 +168,15 @@
           vm.isComment = false;
         });
       },
-      praiseWhisper: function (i) {
+      praiseWhisper: function (i, p) {
         var vm = this;
+        if (p) {
+          vm.$message({
+            message: '已经点过赞了哟',
+            type: 'warning'
+          });
+          return;
+        }
         if (vm.isPraise) {
           vm.$message({
             message: '手速太快啦',

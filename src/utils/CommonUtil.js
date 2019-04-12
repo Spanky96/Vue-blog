@@ -1,5 +1,6 @@
 import qs from 'qs';
 import _ from 'lodash';
+import moment from 'moment';
 export default {
   stringify: qs.stringify,
   toggleAttr: function (arr, index, attrName = 'active') {
@@ -12,5 +13,8 @@ export default {
   split: (str, reg = ',') => {
     var arr = str.split(reg);
     return _.without(arr, '');
+  },
+  getCurrentTime: (fmt = 'YYYY-MM-DD hh:mm:ss') => {
+    return moment().format(fmt);
   }
 };

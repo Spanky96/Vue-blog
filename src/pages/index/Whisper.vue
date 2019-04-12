@@ -15,7 +15,7 @@
           </div>
           <div class="op-list">
             <p class="like" @click="praiseWhisper(item.id)"><i class="layui-icon layui-icon-praise"></i><span>{{item.loveCount}}</span></p> 
-            <p class="edit"><i class="layui-icon layui-icon-reply-fill"></i><span>{{item.commentCount}}</span></p>
+            <p class="edit" @click="item.open = true;$forceUpdate();"><i class="layui-icon layui-icon-reply-fill"></i><span>{{item.commentCount}}</span></p>
             <p class="off" @click="item.open = !item.open; $forceUpdate();"><span>{{item.open ? '展开' : '收起'}}</span><i class="layui-icon" :class="item.open ? 'layui-icon-down' : 'layui-icon-up'"></i></p>
           </div>
         </div>
@@ -30,7 +30,7 @@
               </div>
               <div class="layui-form-item">
                 <div class="layui-input-block" style="text-align: right;">
-                  <button class="layui-btn definite" @click="commentWhisper(item.id)">確定</button>
+                  <button class="layui-btn definite" @click="commentWhisper(item)">確定</button>
                 </div>
               </div>
             </div>
@@ -106,7 +106,7 @@
           vm.isloading = false;
         });
       },
-      commentWhisper: function (i) {
+      commentWhisper: function (item) {
         var vm = this;
         if (vm.isComment) {
           vm.$message({
@@ -136,7 +136,7 @@
         }
         vm.$http({
           url: 'api/comment/add',
-          data: {parent: i, content: vm.comment, type: 3},
+          data: {parent: item.id, content: vm.comment, type: 3},
           method: 'post',
           headers: {'content-type': 'application/json', 'authorT': token}
         }).then(function (res) {
@@ -145,6 +145,14 @@
               message: res.data.data,
               type: 'success'
             });
+            var comment = {
+              author: (vm.loginUser && vm.loginUser.name) || "匿名用户",
+              authorAvator: (vm.loginUser && vm.loginUser.logo) || "/static/imgs/headimg/default.png",
+              content: vm.comment,
+              date: vm.$util.getCurrentTime()
+            };
+            item.comments.unshift(comment);
+            item.commentCount += 1;
             vm.comment = '';
           } else {
             vm.$message({

@@ -104,6 +104,16 @@
               message: res.data.data,
               type: 'success'
             });
+            var item = {
+              author: (vm.loginUser && vm.loginUser.id) || -1,
+              authorLogo: (vm.loginUser && vm.loginUser.logo) || "/static/imgs/headimg/default.png",
+              authorName: (vm.loginUser && vm.loginUser.name) || "匿名用户",
+              content: vm.content,
+              createTime: vm.$util.getCurrentTime(),
+              id: new Date().getTime(),
+              user: blogId
+            };
+            vm.leacotList.unshift(item);
             vm.content = '';
           } else {
             vm.$message({

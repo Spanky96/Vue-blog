@@ -8,7 +8,7 @@ import Whisper from '@/pages/index/Whisper';
 import Leacots from '@/pages/index/Leacots';
 import Album from '@/pages/index/Album';
 import About from '@/pages/index/About';
-import Details from '@/pages/index/Details';
+import ArticleDetail from '@/pages/index/ArticleDetail';
 
 import Fail from '@/pages/Fail';
 Vue.use(Router);
@@ -50,9 +50,9 @@ export default new Router({
           component: About
         },
         {
-          path: 'details',
-          name: 'Details',
-          component: Details
+          path: 'article/:articleId',
+          name: 'ArticleDetail',
+          component: ArticleDetail
         }
       ]
     },

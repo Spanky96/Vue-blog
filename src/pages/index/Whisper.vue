@@ -1,5 +1,5 @@
 <template>
-<div class="content whisper-content" v-loading="isloading">
+<div class="content whisper-content" v-loading="isloading" :style="{background: `url(${$parent.blogInfo.weixinPic})`}">
   <div class="cont">
     <div class="whisper-list">
       <div class="item-box" v-for="(item, index) in whisperPage" :key="index">
@@ -14,7 +14,7 @@
             <img v-for="(img, idimg) in item.imgs" :key="idimg" :src="img">
           </div>
           <div class="op-list">
-            <p class="like" @click="praiseWhisper(item.id,item.isPraised)"><i class="layui-icon layui-icon-praise"></i><span>{{item.loveCount}}</span></p> 
+            <p class="like" @click="praiseWhisper(item)"><i class="iconfont" :class="item.isPraised ? 'iconyizan' : 'icondianzan'"></i><span>{{item.loveCount}}</span></p> 
             <p class="edit" @click="item.open = true;$forceUpdate();"><i class="layui-icon layui-icon-reply-fill"></i><span>{{item.commentCount}}</span></p>
             <p class="off" @click="item.open = !item.open; $forceUpdate();"><span>{{item.open ? '展开' : '收起'}}</span><i class="layui-icon" :class="item.open ? 'layui-icon-down' : 'layui-icon-up'"></i></p>
           </div>
@@ -168,9 +168,9 @@
           vm.isComment = false;
         });
       },
-      praiseWhisper: function (i, p) {
+      praiseWhisper: function (item) {
         var vm = this;
-        if (p) {
+        if (item.isPraised) {
           vm.$message({
             message: '已经点过赞了哟',
             type: 'warning'
@@ -197,7 +197,7 @@
         }
         vm.$http({
           url: 'api/whisper/praise',
-          data: vm.$util.stringify({whisperId: i}),
+          data: vm.$util.stringify({whisperId: item.id}),
           method: 'post',
           headers: {'content-type': 'application/x-www-form-urlencoded', 'authorT': token}
         }).then(function (res) {
@@ -208,6 +208,8 @@
                 message: '点赞+' + index,
                 type: 'success'
               });
+              item.loveCount += 1;
+              item.isPraised = true;
             } else {
               vm.$message({
                 message: '点赞失败',
@@ -243,6 +245,9 @@
   justify-content: space-evenly;
   &.__0 {
     display: none;
+  }
+  &.__1 img{
+    max-height: 100vw;
   }
   &.__2 {
     img {

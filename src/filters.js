@@ -13,8 +13,12 @@ function isOrNoFmt (val) {
     return '未知';
   }
 }
+function deleteHtmlTag (v) {
+  return v.replace(/<[^<>]+>/g, '');
+}
 export default {
   genderFmt,
   isSuccessFmt,
-  isOrNoFmt
+  isOrNoFmt,
+  deleteHtmlTag
 };

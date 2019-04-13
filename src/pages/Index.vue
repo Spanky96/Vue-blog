@@ -59,21 +59,21 @@ export default {
     vm.$router.afterEach((to, from) => {
       var activeItem = to.name;
       vm.menus.forEach((n) => {
-        n.active = activeItem == n.component;
+        n.active = n.component.includes(activeItem);
       });
     });
     var blogId = vm.$route.params.id;
     vm.getBlogInfo();
     var activeItem = this.$router.currentRoute.name;
     var menus = [
-      {name: '文章', component: 'Article', path: '/page/article', active: false},
-      {name: '微语', component: 'Whisper', path: '/page/whisper', active: false},
-      {name: '留言', component: 'Leacots', path: '/page/leacots', active: false},
-      {name: '相册', component: 'Album', path: '/page/album', active: false},
-      {name: '关于', component: 'About', path: '/page/about', active: false}
+      {name: '文章', component: ['Article', 'ArticleDetail'], path: '/page/article', active: false},
+      {name: '微语', component: ['Whisper'], path: '/page/whisper', active: false},
+      {name: '留言', component: ['Leacots'], path: '/page/leacots', active: false},
+      {name: '相册', component: ['Album'], path: '/page/album', active: false},
+      {name: '关于', component: ['About'], path: '/page/about', active: false}
     ];
     menus.forEach((n) => {
-      n.active = activeItem == n.component;
+      n.active = n.component.includes(activeItem);
     });
     return {
       showMobileMenu: false,

@@ -27,9 +27,9 @@
                 <div class="layui-col-xs12 layui-col-sm8 layui-col-md7">
                   <div class="item-cont">
                     <!-- <button class="layui-btn layui-btn-danger new-icon">new</button> -->
-                    <h3 class="title">{{item.title}}</h3>
+                    <h3 class="title"><router-link :to="{name: 'ArticleDetail', params: {id: $parent.blogId, articleId: item.id, article: item}}">{{item.title}}</router-link></h3>
                     <h5><div>{{item.categoryName}}</div><div>{{item.createTime}}</div></h5>
-                    <p>{{item.content}}</p>
+                    <p>{{item.content | deleteHtmlTag}}</p>
                     <h4>{{item.description}}</h4>
                     <!-- <router-link to="/page/details" class="go-icon"></router-link> -->
                   </div>

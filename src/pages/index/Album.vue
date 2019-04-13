@@ -10,7 +10,7 @@
     <div class="img-list">
       <div class="layui-fluid" style="padding:0">
         <div class="layui-row layui-col-space30 space">
-          <div class="layui-col-xs12 layui-col-sm4 layui-col-md4" v-for="(item, index) in album.items" :key="index">
+          <div class="layui-col-xs12 layui-col-sm4 layui-col-md4" v-for="(item, index) in albumPaganation" :key="index">
             <div class="item">
               <img :src="item.photo">
               <div class="cont-text">
@@ -26,7 +26,8 @@
         background
         layout="prev, pager, next"
         :pager-count="5"
-        :total="3">
+        :total="album.items.length"
+        @current-change="handlePageChange">
       </el-pagination>
     </div>
   </div>
@@ -36,92 +37,53 @@
   export default {
     data () {
       var album = {
-        top: {
-          photo: '/static/imgs/1551340747385.jpg',
-          date: '2018/08/08',
-          more: '最新上传',
-          briefly: '观赏最美的土耳其的日'
-        },
-        items: [
-          {
-            photo: '/static/imgs/1551340747388.jpg',
-            date: '2018/08/08',
-            position: '江西九江',
-            briefly: '今日天气晴朗,庐山一日游'
-          },
-          {
-            photo: '/static/imgs/1551340747389.jpg',
-            date: '2018/08/08',
-            position: '江西九江',
-            briefly: '今日天气晴朗,庐山一日游'
-          },
-          {
-            photo: '/static/imgs/1551340747390.jpg',
-            date: '2018/08/08',
-            position: '江西九江',
-            briefly: '今日天气晴朗,庐山一日游'
-          },
-          {
-            photo: '/static/imgs/1551340747391.jpg',
-            date: '2018/08/08',
-            position: '江西九江',
-            briefly: '今日天气晴朗,庐山一日游'
-          },
-          {
-            photo: '/static/imgs/1551340747392.jpg',
-            date: '2018/08/08',
-            position: '江西九江',
-            briefly: '今日天气晴朗,庐山一日游'
-          },
-          {
-            photo: '/static/imgs/1551340747555.jpg',
-            date: '2018/08/08',
-            position: '江西九江',
-            briefly: '今日天气晴朗,庐山一日游'
-          },
-          {
-            photo: '/static/imgs/1551340747624.jpg',
-            date: '2018/08/08',
-            position: '江西九江',
-            briefly: '今日天气晴朗,庐山一日游'
-          },
-          {
-            photo: '/static/imgs/1551340747695.jpg',
-            date: '2018/08/08',
-            position: '江西九江',
-            briefly: '今日天气晴朗,庐山一日游'
-          },
-          {
-            photo: '/static/imgs/1551340747747.jpg',
-            date: '2018/08/08',
-            position: '江西九江',
-            briefly: '今日天气晴朗,庐山一日游'
-          },
-          {
-            photo: '/static/imgs/1551340747804.jpg',
-            date: '2018/08/08',
-            position: '江西九江',
-            briefly: '今日天气晴朗,庐山一日游'
-          },
-          {
-            photo: '/static/imgs/1551340747874.jpg',
-            date: '2018/08/08',
-            position: '江西九江',
-            briefly: '今日天气晴朗,庐山一日游'
-          },
-          {
-            photo: '/static/imgs/1551340747967.jpg',
-            date: '2018/08/08',
-            position: '江西九江',
-            briefly: '今日天气晴朗,庐山一日游'
-          }
-        ]
+        top: {},
+        items: []
       };
       return {
-        album
+        album,
+        isloading: false,
+        currentPage: 1
       };
     },
     methods: {
+      handlePageChange: function (val) {
+        this.currentPage = val;
+      },
+      getAlbums: function () {
+        var vm = this;
+        var blogId = vm.$parent.blogId;
+        vm.isloading = true;
+        vm.$http.post('api/album/list', vm.$util.stringify({
+          userId: blogId
+        })).then(function (res) {
+          if (res.data.code == 200) {
+            vm.album.items = res.data.data;
+          } else {
+            vm.$message({
+              message: res.data.message,
+              type: 'warning'
+            });
+          }
+          vm.isloading = false;
+        });
+      },
+      getLastAlbum: function () {
+        var vm = this;
+        var blogId = vm.$parent.blogId;
+        vm.$http.post('api/album/last', vm.$util.stringify({
+          userId: blogId
+        })).then(function (res) {
+          if (res.data.code == 200) {
+            vm.album.top = res.data.data || {};
+          } else {
+            vm.$message({
+              message: res.data.message,
+              type: 'warning'
+            });
+          }
+        });
+      }
     },
     mounted: function () {
       layui.use(['layer'], function () {
@@ -133,6 +95,13 @@
           }
         });
       });
+      this.getLastAlbum();
+      this.getAlbums();
+    },
+    computed: {
+      albumPaganation: function () {
+        return this.album.items.slice((this.currentPage - 1) * 10, this.currentPage * 10);
+      }
     }
   };
 

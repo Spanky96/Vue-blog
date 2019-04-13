@@ -419,65 +419,6 @@ body {
 
 /*end-details*/
 
-/*album*/
-
-.album-content {
-  .img-info {
-    margin-top: 66px;
-    overflow: hidden;
-    font-size: 16px;
-    margin-bottom: 126px;
-    img {
-      float: left;
-      padding-right: 60px;
-    }
-    .title {
-      line-height: 30px;
-      margin-top: 124px;
-      padding-left: 20px;
-      .data {
-        color: #ff7f21;
-        span {
-          padding-left: 35px;
-        }
-      }
-    }
-  }
-  .img-list {
-    overflow: hidden;
-    padding-bottom: 50px;
-    .item {
-      float: left;
-      width: 100%;
-    }
-    .layui-laypage {
-      margin: 50px 0;
-    }
-    .space > * {
-      padding: 55px;
-    }
-    .layui-col-space80 {
-      padding: 40px;
-    }
-    .item img {
-      width: 100%;
-    }
-    .cont-text {
-      padding-left: 10px;
-      .data {
-        line-height: 55px;
-        color: #ff7f21;
-      }
-      .briefly {
-        line-height: 24px;
-        margin-top: 16px;
-      }
-    }
-  }
-}
-
-/*end-album*/
-
 /*about*/
 
 .about-content {
@@ -594,20 +535,6 @@ body {
   .leacots-content {
     padding: 0 20px 40px 20px;
   }
-  .album-content {
-    .img-info {
-      img {
-        width: 100%;
-        padding-right: 0;
-        margin-bottom: 20px;
-      }
-      margin-top: 0px;
-      margin-bottom: 50px;
-    }
-    .img-list .space > * {
-      padding: 30px;
-    }
-  }
 }
 
 @media screen and (max-width: 768px) {
@@ -676,17 +603,6 @@ body {
   }
   .leacots-content .review-version .form {
     margin: 40px 0;
-  }
-  .album-content .img-list {
-    .space > * {
-      padding: 10px;
-    }
-    .layui-laypage {
-      margin: 50px 0 0 0;
-    }
-    #demo {
-      text-align: center;
-    }
   }
   .about-content .item {
     &.info {
